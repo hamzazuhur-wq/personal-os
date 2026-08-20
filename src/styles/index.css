@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Foundation Deep Dark Palette */
+    --bg-base: #060709;
+    --bg-surface-0: rgba(10, 12, 16, 0.4);
+    --bg-surface-1: rgba(15, 18, 24, 0.6);
+    --bg-surface-2: rgba(22, 27, 36, 0.7);
+    --bg-surface-3: rgba(30, 37, 49, 0.8);
+    --bg-surface-hover: rgba(38, 46, 61, 0.85);
+
+    /* Glass Borders & Inner Light Reflections */
+    --border-glass-subtle: rgba(255, 255, 255, 0.06);
+    --border-glass-medium: rgba(255, 255, 255, 0.12);
+    --border-glass-highlight: rgba(255, 255, 255, 0.22);
+    --border-accent-orange: rgba(255, 106, 42, 0.35);
+
+    /* High-End Typography Palette */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-highlight: #fff4ec;
+
+    /* Primary Accent: Light, Warm, Fiery Orange Family */
+    --accent-orange-primary: #ff6a2a;
+    --accent-orange-bright: #ff8a4a;
+    --accent-orange-soft: #ffb27a;
+    --accent-orange-light: #fff4ec;
+    --accent-orange-glow: rgba(255, 106, 42, 0.22);
+    --accent-orange-subtle: rgba(255, 106, 42, 0.08);
+
+    /* Supporting Semantic Accents */
+    --accent-emerald: #10b981;
+    --accent-emerald-glow: rgba(16, 185, 129, 0.2);
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    --accent-cyan: #06b6d4;
+
+    /* Blur Defaults */
+    --glass-blur-sm: blur(12px);
+    --glass-blur-md: blur(20px);
+    --glass-blur-lg: blur(32px);
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.015em;
+    min-height: 100vh;
+  }
+
+  code, kbd, samp, pre, .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* ==========================================================================
+   GLASSMORPHISM & DEPTH SURFACES
+   ========================================================================== */
+
+/* Level 1: Transparent Base Glass */
+.glass-base {
+  background: rgba(12, 15, 20, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Level 2: Elevated Frosted Glass Panel */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(18, 22, 30, 0.65) 0%, rgba(12, 15, 20, 0.75) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Level 3: Floating Interactive Glass Object */
+.glass-interactive {
+  background: linear-gradient(135deg, rgba(22, 27, 36, 0.6) 0%, rgba(15, 18, 25, 0.7) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-interactive:hover {
+  background: linear-gradient(135deg, rgba(28, 34, 46, 0.75) 0%, rgba(18, 22, 30, 0.85) 100%);
+  border-color: rgba(255, 138, 74, 0.3);
+  transform: translateY(-1.5px);
+  box-shadow: 0 16px 48px -10px rgba(255, 106, 42, 0.12), 0 8px 24px -6px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Level 4: Active / Illuminated Glass Card */
+.glass-active {
+  background: linear-gradient(180deg, rgba(28, 33, 44, 0.7) 0%, rgba(20, 24, 33, 0.85) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 138, 74, 0.4);
+  box-shadow: 0 16px 40px -12px rgba(255, 106, 42, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Recessed Glass Input Surface */
+.glass-input {
+  background: rgba(8, 10, 14, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+  transition: all 0.15s ease-in-out;
+}
+
+.glass-input:focus {
+  background: rgba(12, 15, 20, 0.85);
+  border-color: rgba(255, 138, 74, 0.6);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4), 0 0 20px -3px rgba(255, 106, 42, 0.25);
+}
+
+/* ==========================================================================
+   VERTICAL LUMINOUS ILLUMINATION & GLOW EFFECTS
+   ========================================================================== */
+
+/* Upward Illumination Glow (Strong at bottom, soft at top) */
+.luminous-bottom-glow {
+  position: relative;
+}
+
+.luminous-bottom-glow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 40%;
+  background: radial-gradient(ellipse at bottom, rgba(255, 106, 42, 0.22) 0%, rgba(255, 106, 42, 0) 70%);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+/* Orange Gradient Fill for Progress & Viz (Strong bottom illumination) */
+.progress-fill-orange {
+  background: linear-gradient(180deg, #ffb27a 0%, #ff6a2a 60%, #e65100 100%);
+  box-shadow: 0 4px 14px -2px rgba(255, 106, 42, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+.progress-track-glass {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Precision Focus Ring */
+:focus-visible {
+  outline: 2px solid var(--accent-orange-bright);
+  outline-offset: 2px;
+}
+
+/* Precision Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 138, 74, 0.4);
+}
