@@ -1,0 +1,16 @@
+{
+  "name": "KRATOS",
+  "short_name": "KRATOS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#060709",
+  "theme_color": "#ff6a2a",
+  "icons": [
+    {
+      "src": "/kratos-icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

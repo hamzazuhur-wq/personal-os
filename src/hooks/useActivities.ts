@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useActivityRepo } from '../app/providers/RepositoryProvider';
 import { Activity, CreateActivityDTO, UpdateActivityDTO, DailyActivitySummary } from '../types/activity.types';
 import { getTodayDateString } from '../utils/dateUtils';
+import { pointService } from '../services/points/pointService';
 
 export function useActivities(initialDate: string = getTodayDateString()) {
   const repo = useActivityRepo();
@@ -45,6 +46,9 @@ export function useActivities(initialDate: string = getTodayDateString()) {
   const createActivity = async (dto: CreateActivityDTO): Promise<Activity> => {
     try {
       const created = await repo.create(dto);
+      // Centralized point service: awards practice points exactly once when a
+      // practice is linked; plain (non-practice) activities never award points.
+      await pointService.awardForActivity({ activity: created });
       if (created.date === selectedDate) {
         await fetchDayData(selectedDate);
       }

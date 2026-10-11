@@ -3,15 +3,19 @@ import { Modal } from '../../components/ui/Modal';
 import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Button } from '../../components/ui/Button';
+import { Select } from '../../components/ui/Select';
 import { TASK_PRIORITIES } from '../../constants/priorities';
 import { Task, CreateTaskDTO, UpdateTaskDTO, TaskPriority } from '../../types/task.types';
+import { Practice } from '../../types/practice.types';
 import { getISOWeekString } from '../../utils/dateUtils';
+import { Zap } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 export interface TaskFormModalProps {
   isOpen: boolean;
   onClose: () => void;
   taskToEdit?: Task | null;
+  practices?: Practice[];
   onSave: (dto: CreateTaskDTO | UpdateTaskDTO) => Promise<void>;
 }
 
@@ -19,12 +23,14 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
   isOpen,
   onClose,
   taskToEdit,
+  practices = [],
   onSave,
 }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState<TaskPriority>('medium');
   const [dueDate, setDueDate] = useState('');
+  const [relatedPracticeId, setRelatedPracticeId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,11 +40,13 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
       setDescription(taskToEdit.description || '');
       setPriority(taskToEdit.priority || 'medium');
       setDueDate(taskToEdit.due_date || '');
+      setRelatedPracticeId(taskToEdit.related_practice_id || '');
     } else {
       setTitle('');
       setDescription('');
       setPriority('medium');
       setDueDate('');
+      setRelatedPracticeId('');
     }
     setError(null);
   }, [taskToEdit, isOpen]);
@@ -60,6 +68,7 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
         priority,
         due_date: dueDate || undefined,
         related_week: getISOWeekString(),
+        related_practice_id: relatedPracticeId || undefined,
       });
 
       onClose();
@@ -70,6 +79,18 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
       setIsSubmitting(false);
     }
   };
+
+  const activePractices = practices.filter((p) => p.status !== 'archived');
+  const linkedPractice = activePractices.find((p) => p.id === relatedPracticeId);
+
+  const practiceOptions = [
+    { value: '', label: 'No Practice (No Points)' },
+    ...activePractices.map((p) => ({
+      value: p.id,
+      label: p.title,
+      subtext: `+${p.point_value} pts on completion${p.repeatable === false ? ' · one-time' : ''}`,
+    })),
+  ];
 
   return (
     <Modal
@@ -136,6 +157,32 @@ export const TaskFormModal: React.FC<TaskFormModalProps> = ({
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+
+        {/* Module 08.2: Optional practice link — points awarded exactly once
+            via the central PointService when the task is completed */}
+        <div className="space-y-1">
+          <label className="text-[11px] font-mono font-semibold uppercase tracking-[0.15em] text-text-muted block mb-2">
+            Linked Practice (Optional)
+          </label>
+          <Select
+            size="sm"
+            value={relatedPracticeId}
+            onChange={(v) => setRelatedPracticeId(v)}
+            options={practiceOptions}
+            placeholder="Link a practice to earn points on completion..."
+            aria-label="Linked Practice"
+          />
+          {linkedPractice ? (
+            <p className="text-[11px] font-mono text-emerald-400 flex items-center gap-1 pt-1">
+              <Zap className="w-3 h-3 shrink-0" />
+              +{linkedPractice.point_value} pts awarded once when this task is completed.
+            </p>
+          ) : (
+            <p className="text-[11px] text-text-muted pt-1">
+              Tasks without a linked practice never award points.
+            </p>
+          )}
+        </div>
 
         <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-white/[0.08]">
           <Button variant="ghost" size="md" onClick={onClose} disabled={isSubmitting}>

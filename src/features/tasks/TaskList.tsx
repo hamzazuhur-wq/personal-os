@@ -10,9 +10,10 @@ import { cn } from '../../utils/cn';
 
 export interface TaskListProps {
   onNewTaskClick?: () => void;
+  onTasksChanged?: () => Promise<void>;
 }
 
-export const TaskList: React.FC<TaskListProps> = ({ onNewTaskClick }) => {
+export const TaskList: React.FC<TaskListProps> = ({ onNewTaskClick, onTasksChanged }) => {
   const [filterStatus, setFilterStatus] = useState<TaskStatus | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -49,6 +50,7 @@ export const TaskList: React.FC<TaskListProps> = ({ onNewTaskClick }) => {
     } else {
       await createTask(dto as any);
     }
+    await onTasksChanged?.();
   };
 
   const tabs: { id: TaskStatus | 'all'; label: string; count?: number }[] = [
@@ -122,9 +124,13 @@ export const TaskList: React.FC<TaskListProps> = ({ onNewTaskClick }) => {
               task={task}
               onToggleComplete={async (id, isComp) => {
                 await toggleTaskCompletion(id, isComp);
+                await onTasksChanged?.();
               }}
               onEdit={handleEdit}
-              onDelete={deleteTask}
+              onDelete={async (id) => {
+                await deleteTask(id);
+                await onTasksChanged?.();
+              }}
             />
           ))}
         </div>

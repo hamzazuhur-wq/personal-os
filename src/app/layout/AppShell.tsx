@@ -17,7 +17,21 @@ export const AppShell: React.FC<AppShellProps> = ({
   children,
 }) => {
   const currentItem = MAIN_NAV_ITEMS.find((item) => item.id === currentRoute);
-  const currentTitle = currentItem?.label || 'Command Center';
+  const currentTitle = currentRoute.startsWith('/ai')
+    ? 'AI Intelligence'
+    : currentRoute.startsWith('/review')
+    ? 'Review & Analytics'
+    : currentRoute.startsWith('/skills')
+    ? 'Skill Matrix'
+    : currentRoute.startsWith('/projects')
+    ? 'Active Projects'
+    : currentRoute.startsWith('/levels')
+    ? 'Development Levels'
+    : currentRoute.startsWith('/goals')
+    ? 'Strategic Goals'
+    : currentRoute.startsWith('/vision')
+    ? 'Vision & Long-Term'
+    : currentItem?.label || 'Command Center';
 
   return (
     <div className="relative min-h-screen bg-[#060709] text-text-primary overflow-x-hidden selection:bg-[#ff6a2a]/25 selection:text-[#fff4ec]">

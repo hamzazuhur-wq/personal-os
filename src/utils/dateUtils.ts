@@ -1,5 +1,5 @@
 /**
- * Precision date and time utilities for the Personal Operating System.
+ * Precision date and time utilities for Aura Leveling.
  * Supports ISO-8601 formatting, timezone-safe localized displays, and ISO week calculation.
  */
 
@@ -28,8 +28,11 @@ export function getCurrentTimeString(format: '24h' | '12h' = '24h'): string {
 
 export function formatHumanDate(dateStr: string): string {
   if (!dateStr) return '';
-  const [year, month, day] = dateStr.split('-').map(Number);
+  // Normalize full ISO timestamps ("2026-08-22T12:00:00.000Z") to date-only input.
+  const normalized = dateStr.slice(0, 10);
+  const [year, month, day] = normalized.split('-').map(Number);
   const date = new Date(year, month - 1, day);
+  if (Number.isNaN(date.getTime())) return '';
 
   return new Intl.DateTimeFormat('en-US', {
     weekday: 'long',
@@ -41,8 +44,11 @@ export function formatHumanDate(dateStr: string): string {
 
 export function formatShortDate(dateStr: string): string {
   if (!dateStr) return '';
-  const [year, month, day] = dateStr.split('-').map(Number);
+  // Normalize full ISO timestamps ("2026-08-22T12:00:00.000Z") to date-only input.
+  const normalized = dateStr.slice(0, 10);
+  const [year, month, day] = normalized.split('-').map(Number);
   const date = new Date(year, month - 1, day);
+  if (Number.isNaN(date.getTime())) return '';
 
   return new Intl.DateTimeFormat('en-US', {
     month: 'short',

@@ -28,6 +28,13 @@ export interface Activity {
   related_project_id?: string;
   related_goal_id?: string;
   related_level_id?: string;
+  related_task_id?: string;
+  related_life_area_id?: string;
+
+  // Module 08.2 — Optional Development Practice link.
+  // When set at creation time, practice points are awarded exactly once via the
+  // centralized PointService. Activities WITHOUT a practice never award points.
+  related_practice_id?: string;
 }
 
 export interface CreateActivityDTO {
@@ -41,6 +48,9 @@ export interface CreateActivityDTO {
   related_project_id?: string;
   related_goal_id?: string;
   related_level_id?: string;
+  related_task_id?: string;
+  related_life_area_id?: string;
+  related_practice_id?: string;
 }
 
 export interface UpdateActivityDTO {
@@ -55,6 +65,9 @@ export interface UpdateActivityDTO {
   related_project_id?: string;
   related_goal_id?: string;
   related_level_id?: string;
+  related_task_id?: string;
+  related_life_area_id?: string;
+  related_practice_id?: string;
 }
 
 export interface DailyActivitySummary {

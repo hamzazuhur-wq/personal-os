@@ -56,6 +56,64 @@
   }
 }
 
+/* Shared Liquid Button interaction. The surface stays lightweight: only
+   transform, opacity, filter and box-shadow are animated. */
+.liquid-button {
+  isolation: isolate;
+  will-change: transform;
+}
+
+.liquid-button__sheen {
+  position: absolute;
+  inset: -45% -18%;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(112deg, transparent 30%, rgba(255,255,255,.22) 48%, transparent 66%);
+  transform: translateX(-115%) rotate(8deg);
+  opacity: 0;
+  transition: transform 520ms cubic-bezier(.22, 1, .36, 1), opacity 180ms ease-out;
+}
+
+.liquid-button:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.01);
+  filter: brightness(1.06);
+}
+
+.liquid-button:hover:not(:disabled) .liquid-button__sheen {
+  transform: translateX(115%) rotate(8deg);
+  opacity: .85;
+}
+
+.liquid-button:active:not(:disabled) {
+  transform: translateY(0) scale(.97);
+  filter: brightness(.98);
+  transition-duration: 90ms;
+}
+
+button:not(.liquid-button):not(.capture-calm-button):not(:disabled) {
+  transition: transform 180ms cubic-bezier(.22, 1, .36, 1), filter 180ms ease-out, box-shadow 180ms ease-out;
+}
+
+button:not(.liquid-button):not(.capture-calm-button):not(:disabled):hover {
+  transform: translateY(-1px) scale(1.005);
+  filter: brightness(1.04);
+}
+
+button:not(.liquid-button):not(.capture-calm-button):not(:disabled):active {
+  transform: translateY(0) scale(.98);
+  filter: brightness(.98);
+  transition-duration: 90ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-button,
+  .liquid-button__sheen,
+  button:not(.capture-calm-button) {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
 /* ==========================================================================
    GLASSMORPHISM & DEPTH SURFACES
    ========================================================================== */
@@ -153,10 +211,114 @@
   border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-/* Precision Focus Ring */
+/* Quick Capture: local, low-volume illumination. */
+.capture-page { position: relative; }
+
+.capture-page__composer { position: relative; }
+
+.capture-page__composer::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: min(88vw, 720px);
+  height: 220px;
+  top: 18%;
+  left: 8%;
+  background: radial-gradient(ellipse, rgba(255, 106, 42, 0.16), transparent 67%);
+  filter: blur(42px);
+  pointer-events: none;
+}
+
+.capture-page__signal {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--accent-orange-bright);
+  border: 1px solid rgba(255, 138, 74, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 106, 42, 0.08);
+}
+
+.capture-input {
+  background: linear-gradient(135deg, rgba(23, 27, 35, 0.64), rgba(10, 12, 17, 0.44));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255,255,255,0.14);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+.capture-input:hover { border-color: rgba(255,255,255,0.15); }
+
+.capture-input__ambient {
+  position: absolute;
+  width: 65%;
+  height: 65%;
+  right: 4%;
+  bottom: -38%;
+  pointer-events: none;
+  background: radial-gradient(ellipse at bottom, rgba(255,106,42,0.2), transparent 67%);
+  filter: blur(26px);
+}
+
+/* Quick Capture interactions stay steady: no lift or spring-like feedback. */
+.capture-calm-button {
+  transition-property: opacity, filter, background-color, border-color, box-shadow, transform !important;
+  transition-duration: 110ms !important;
+  transition-timing-function: ease-out !important;
+}
+
+.capture-calm-button:hover {
+  transform: none !important;
+  opacity: 0.94;
+  filter: brightness(1.02);
+}
+
+.capture-calm-button:active {
+  transform: none !important;
+  opacity: 0.88;
+  filter: brightness(0.98);
+}
+
+.capture-list__toolbar {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.065);
+}
+
+.capture-card {
+  background: linear-gradient(105deg, rgba(24,28,36,0.53), rgba(11,14,19,0.35));
+  box-shadow: 0 10px 25px -20px rgba(0,0,0,0.85), inset 0 1px 0 rgba(255,255,255,0.055);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* ==========================================================================
+   GLOBAL FOCUS MANAGEMENT (No White Button Flash)
+   ========================================================================== */
+
+/* Remove default browser focus outlines on mouse/pointer clicks */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+select:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+[role="button"]:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none;
+}
+
+/* Precision Warm Orange Focus Ring for Keyboard Navigation ONLY */
 :focus-visible {
-  outline: 2px solid var(--accent-orange-bright);
-  outline-offset: 2px;
+  outline: 1.5px solid rgba(255, 138, 74, 0.75) !important;
+  outline-offset: 2px !important;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 1.5px solid rgba(255, 138, 74, 0.75) !important;
+  outline-offset: 2px !important;
 }
 
 /* Precision Scrollbars */
@@ -176,4 +338,18 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 138, 74, 0.4);
+}
+
+/* ==========================================================================
+   MOBILE NAVIGATION HORIZONTAL SCROLL
+   ========================================================================== */
+
+/* Hide scrollbar for mobile navigation while keeping scroll functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }

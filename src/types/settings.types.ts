@@ -1,3 +1,5 @@
+export type VoiceLanguage = 'ar-SA' | 'en-US';
+
 export interface UserSettings {
   id: string; // 'default'
   user_callsign: string;
@@ -6,6 +8,8 @@ export interface UserSettings {
   theme: 'cyber-dark' | 'obsidian';
   accent_color: 'emerald' | 'cyan' | 'electric-blue';
   sound_effects_enabled: boolean;
+  /** Speech-recognition locale for Voice / AI Voice capture. Default Arabic. */
+  voice_language?: VoiceLanguage;
   updated_at: string;
 }
 

@@ -27,12 +27,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium transition-all duration-200 select-none rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#ff8a4a] disabled:opacity-40 disabled:pointer-events-none active:scale-[0.98] cursor-pointer relative overflow-hidden';
+      'liquid-button inline-flex flex-row items-center justify-center font-medium transition-[transform,filter,box-shadow,background-color,border-color] duration-200 ease-out select-none rounded-lg focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#ff8a4a]/80 disabled:opacity-40 disabled:pointer-events-none cursor-pointer relative overflow-hidden active:opacity-90 whitespace-nowrap';
 
     const sizeStyles = {
       sm: 'text-xs px-3 py-1.5 min-h-[36px] gap-1.5 tracking-wide',
-      md: 'text-sm px-4 py-2 min-h-[42px] gap-2 tracking-wide font-medium',
-      lg: 'text-base px-6 py-2.5 min-h-[48px] gap-2.5 font-semibold tracking-wide',
+      md: 'text-sm px-4 py-2 min-h-[40px] gap-2 tracking-wide font-medium',
+      lg: 'text-base px-6 py-2.5 min-h-[46px] gap-2.5 font-semibold tracking-wide',
     };
 
     const variantStyles = {
@@ -56,13 +56,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || isLoading}
         {...props}
       >
+        <span aria-hidden="true" className="liquid-button__sheen" />
+        <span className="relative z-[1] inline-flex flex-row items-center justify-center gap-[inherit]">
         {isLoading ? (
-          <Loader2 className="w-4 h-4 animate-spin text-current" />
+          <Loader2 className="w-4 h-4 animate-spin text-current shrink-0" />
         ) : (
           leftIcon
         )}
-        <span>{children}</span>
+        {typeof children === 'string' || typeof children === 'number' ? (
+          <span className="inline-flex items-center">{children}</span>
+        ) : (
+          children
+        )}
         {!isLoading && rightIcon}
+        </span>
       </button>
     );
   }

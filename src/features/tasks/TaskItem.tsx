@@ -3,7 +3,8 @@ import { Task } from '../../types/task.types';
 import { TASK_PRIORITIES } from '../../constants/priorities';
 import { formatShortDate } from '../../utils/dateUtils';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
-import { Check, Calendar, Edit2, Trash2 } from 'lucide-react';
+import { TaskDetailModal } from './TaskDetailModal';
+import { Check, Calendar, Edit2, Trash2, Info } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 export interface TaskItemProps {
@@ -20,6 +21,7 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   onDelete,
 }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const isCompleted = task.status === 'completed';
@@ -119,6 +121,13 @@ export const TaskItem: React.FC<TaskItemProps> = ({
         {/* Actions */}
         <div className="flex items-center gap-1 shrink-0">
           <button
+            onClick={() => setShowDetailModal(true)}
+            title="Task Details & Development Points"
+            className="text-text-muted hover:text-[#ffb27a] p-1.5 rounded-md hover:bg-white/[0.06] transition-colors cursor-pointer"
+          >
+            <Info className="w-3.5 h-3.5" />
+          </button>
+          <button
             onClick={() => onEdit(task)}
             title="Edit Task"
             className="text-text-muted hover:text-[#fff4ec] p-1.5 rounded-md hover:bg-white/[0.06] transition-colors cursor-pointer"
@@ -134,6 +143,12 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           </button>
         </div>
       </div>
+
+      <TaskDetailModal
+        isOpen={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        task={task}
+      />
 
       <ConfirmDialog
         isOpen={showDeleteConfirm}

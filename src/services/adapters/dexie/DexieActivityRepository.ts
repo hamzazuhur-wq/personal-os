@@ -44,6 +44,9 @@ export class DexieActivityRepository implements IActivityRepository {
       related_project_id: dto.related_project_id,
       related_goal_id: dto.related_goal_id,
       related_level_id: dto.related_level_id,
+      related_task_id: dto.related_task_id,
+      related_life_area_id: dto.related_life_area_id,
+      related_practice_id: dto.related_practice_id,
     };
 
     await posDexieDb.activities.add(newRecord);
@@ -69,6 +72,9 @@ export class DexieActivityRepository implements IActivityRepository {
       ...(dto.related_project_id !== undefined && { related_project_id: dto.related_project_id }),
       ...(dto.related_goal_id !== undefined && { related_goal_id: dto.related_goal_id }),
       ...(dto.related_level_id !== undefined && { related_level_id: dto.related_level_id }),
+      ...(dto.related_task_id !== undefined && { related_task_id: dto.related_task_id }),
+      ...(dto.related_life_area_id !== undefined && { related_life_area_id: dto.related_life_area_id }),
+      ...(dto.related_practice_id !== undefined && { related_practice_id: dto.related_practice_id }),
       updated_at: new Date().toISOString(),
     };
 

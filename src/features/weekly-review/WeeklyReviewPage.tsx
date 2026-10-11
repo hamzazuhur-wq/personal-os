@@ -2,7 +2,11 @@ import React from 'react';
 import { useWeeklyData } from '../../hooks/useWeeklyData';
 import { WeeklyFocusCard } from './WeeklyFocusCard';
 import { WeeklyMetrics } from './WeeklyMetrics';
+import { WeeklyDevelopmentPoints } from './WeeklyDevelopmentPoints';
 import { WeeklyTimelineGrid } from './WeeklyTimelineGrid';
+import { WeeklyGoalSummary } from './WeeklyGoalSummary';
+import { useGoals } from '../../hooks/useGoals';
+import { useVision } from '../../hooks/useVision';
 import { SectionHeader } from '../../components/shared/SectionHeader';
 import { Badge } from '../../components/ui/Badge';
 import { Skeleton } from '../../components/ui/Skeleton';
@@ -16,6 +20,8 @@ export interface WeeklyReviewPageProps {
 
 export const WeeklyReviewPage: React.FC<WeeklyReviewPageProps> = ({ onNavigateToDay }) => {
   const { currentWeekId, data, loading, changeWeek, saveWeeklyFocus } = useWeeklyData();
+  const { rawGoals } = useGoals();
+  const { lifeAreas } = useVision();
 
   const handlePrevWeek = () => {
     const [yearStr, weekStr] = currentWeekId.split('-W');
@@ -95,6 +101,17 @@ export const WeeklyReviewPage: React.FC<WeeklyReviewPageProps> = ({ onNavigateTo
 
           {/* Aggregated Output Metrics */}
           <WeeklyMetrics data={data} />
+
+          {/* Development Points earned this week (Module 08 Final) */}
+          <WeeklyDevelopmentPoints startDate={data.start_date} endDate={data.end_date} />
+
+          {/* Weekly Goal Hierarchy Execution Summary */}
+          <WeeklyGoalSummary
+            activities={data.activities}
+            tasks={data.tasks}
+            goals={rawGoals}
+            lifeAreas={lifeAreas}
+          />
 
           {/* 7-Day Matrix */}
           <WeeklyTimelineGrid data={data} onSelectDate={onNavigateToDay} />

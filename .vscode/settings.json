@@ -1,0 +1,8 @@
+{
+    "terminal.integrated.allowMnemonics": true,
+    "terminal.integrated.allowInUntrustedWorkspace": true,
+    "chat.allowAnonymousAccess": true,
+    "git.allowForcePush": true,
+    "git.allowNoVerifyCommit": true,
+    "kiroAgent.enableTabAutocomplete": true
+}

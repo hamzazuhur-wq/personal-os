@@ -36,6 +36,7 @@ export class DexieCaptureRepository implements ICaptureRepository {
       id: generateId(),
       user_id: APP_CONFIG.defaultUserId,
       content: dto.content.trim(),
+      title: dto.title?.trim() || undefined,
       capture_type: dto.capture_type || 'unclassified',
       status: 'inbox',
       source: dto.source || 'manual',
@@ -60,6 +61,7 @@ export class DexieCaptureRepository implements ICaptureRepository {
     const updated: Capture = {
       ...existing,
       ...(dto.content !== undefined && { content: dto.content.trim() }),
+      ...(dto.title !== undefined && { title: dto.title?.trim() || undefined }),
       ...(dto.capture_type !== undefined && { capture_type: dto.capture_type }),
       ...(dto.status !== undefined && { status: dto.status }),
       ...(dto.related_project_id !== undefined && { related_project_id: dto.related_project_id }),

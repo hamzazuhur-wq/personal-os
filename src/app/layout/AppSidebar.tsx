@@ -8,6 +8,16 @@ import {
   CalendarRange,
   Settings,
   Lock,
+  Compass,
+  Target,
+  Layers,
+  FolderKanban,
+  BrainCircuit,
+  Sparkles,
+  Flame,
+  Award,
+  BarChart3,
+  Lightbulb,
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
@@ -23,6 +33,15 @@ const iconMap = {
   CheckSquare,
   CalendarRange,
   Settings,
+  Target,
+  Compass,
+  Layers,
+  FolderKanban,
+  BrainCircuit,
+  Sparkles,
+  Flame,
+  Award,
+  Lightbulb,
 };
 
 export const AppSidebar: React.FC<AppSidebarProps> = ({ currentRoute, onRouteChange }) => {
@@ -33,14 +52,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ currentRoute, onRouteCha
         <div className="flex items-center gap-3">
           {/* Abstract Line Sketch Monogram / Silhouette */}
           <div className="relative w-9 h-9 rounded-xl bg-gradient-to-b from-white/[0.08] to-white/[0.02] border border-white/15 flex items-center justify-center shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] overflow-hidden group">
-            {/* Minimalist Abstract Line Silhouette */}
             <svg
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               className="w-5 h-5 text-text-primary/90 stroke-[1.4]"
             >
-              {/* Subtle line-based abstract human figure silhouette */}
               <circle cx="12" cy="7" r="2.5" className="stroke-[#ff8a4a]" />
               <path d="M6 19c0-3.3 2.7-6 6-6s6 2.7 6 6" />
               <path d="M12 13v4" strokeDasharray="1 1" className="stroke-white/40" />
@@ -50,12 +67,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ currentRoute, onRouteCha
 
           <div>
             <h1 className="text-xs font-bold tracking-[0.2em] text-[#fff4ec] uppercase font-mono">
-              P.O.S.
+              AURA
             </h1>
             <p className="text-[10px] font-mono text-[#ff8a4a] uppercase tracking-widest flex items-center gap-1.5">
-              <span>CORE</span>
+              <span>LEVELING</span>
               <span className="text-white/20">/</span>
-              <span>MOD 01</span>
+              <span>GROWTH</span>
             </p>
           </div>
         </div>
@@ -70,7 +87,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ currentRoute, onRouteCha
           <nav className="space-y-1">
             {MAIN_NAV_ITEMS.map((item) => {
               const Icon = iconMap[item.iconName];
-              const isActive = currentRoute === item.id;
+              const isActive =
+                currentRoute === item.id ||
+                (item.id === '/ideas' && currentRoute.startsWith('/ideas'));
 
               return (
                 <button
@@ -100,16 +119,122 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({ currentRoute, onRouteCha
           </nav>
         </div>
 
-        {/* Future Architecture Modules */}
+        {/* Strategic Architecture Modules */}
         <div>
           <div className="px-3 mb-2 flex items-center justify-between text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-text-muted/80">
-            <span>Future Architecture</span>
-            <span className="text-[9px] px-1.5 py-0.2 rounded bg-white/[0.04] text-slate-500 font-mono">
-              LOCKED
-            </span>
+            <span>Strategic Architecture</span>
           </div>
           <div className="space-y-1">
-            {FUTURE_MODULES.map((mod) => (
+            {/* Vision Module */}
+            <button
+              onClick={() => onRouteChange('/vision')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/vision')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <Compass className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/vision') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Vision & Long-Term</span>
+              {currentRoute.startsWith('/vision') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Goals Module */}
+            <button
+              onClick={() => onRouteChange('/goals')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/goals')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <Target className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/goals') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Strategic Goals</span>
+              {currentRoute.startsWith('/goals') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Levels Module */}
+            <button
+              onClick={() => onRouteChange('/levels')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/levels')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <Layers className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/levels') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Development Levels</span>
+              {currentRoute.startsWith('/levels') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Active Projects Module */}
+            <button
+              onClick={() => onRouteChange('/projects')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/projects')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <FolderKanban className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/projects') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Active Projects</span>
+              {currentRoute.startsWith('/projects') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Skill Matrix Module */}
+            <button
+              onClick={() => onRouteChange('/skills')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/skills')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <BrainCircuit className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/skills') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Skill Matrix</span>
+              {currentRoute.startsWith('/skills') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Review & Analytics Module */}
+            <button
+              onClick={() => onRouteChange('/review')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/review')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <BarChart3 className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/review') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>Review &amp; Analytics</span>
+              {currentRoute.startsWith('/review') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* AI Intelligence Module */}
+            <button
+              onClick={() => onRouteChange('/ai')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold tracking-wide transition-all text-left cursor-pointer group relative border',
+                currentRoute.startsWith('/ai')
+                  ? 'bg-gradient-to-r from-[#ff6a2a]/20 to-[#ff8a4a]/08 text-[#fff4ec] border-[#ff8a4a]/40 shadow-[0_4px_20px_-3px_rgba(255,106,42,0.25)] font-bold'
+                  : 'text-text-secondary hover:text-text-primary hover:bg-white/[0.04] border-transparent hover:border-white/[0.06]'
+              )}
+            >
+              <Sparkles className={cn('w-4 h-4 shrink-0', currentRoute.startsWith('/ai') ? 'text-[#ff8a4a]' : 'text-text-muted')} />
+              <span>AI Intelligence</span>
+              {currentRoute.startsWith('/ai') && <div className="absolute right-2.5 w-1.5 h-1.5 rounded-full bg-[#ff8a4a] shadow-[0_0_8px_#ff6a2a]" />}
+            </button>
+
+            {/* Module 11: Idea Capture now lives in the main nav above —
+                no separate strategic entry, one user-facing system. */}
+
+            {/* Locked Future Modules */}
+            {FUTURE_MODULES.filter((m) => !m.isAvailable).map((mod) => (
               <div
                 key={mod.id}
                 className="flex items-center justify-between px-3 py-2 rounded-lg text-xs text-text-muted/40 bg-white/[0.01] border border-transparent cursor-not-allowed select-none"

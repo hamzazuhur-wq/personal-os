@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTaskRepo } from '../app/providers/RepositoryProvider';
 import { Task, CreateTaskDTO, UpdateTaskDTO, TaskStatus } from '../types/task.types';
+import { pointService } from '../services/points/pointService';
 
 export function useTasks(statusFilter?: TaskStatus) {
   const repo = useTaskRepo();
@@ -59,9 +60,20 @@ export function useTasks(statusFilter?: TaskStatus) {
 
   const toggleTaskCompletion = async (id: string, currentlyCompleted: boolean): Promise<Task> => {
     try {
-      const result = currentlyCompleted ? await repo.uncomplete(id) : await repo.complete(id);
+      if (currentlyCompleted) {
+        const result = await repo.uncomplete(id);
+        // Revoke any award granted when the task was completed.
+        await pointService.revokeTaskCompletion(id);
+        await fetchTasks();
+        return result;
+      }
+
+      const completed = await repo.complete(id);
+      // Centralized point service: awards exactly once for practice-linked
+      // tasks; tasks without a linked practice never award points.
+      await pointService.awardForTaskCompletion({ task: completed });
       await fetchTasks();
-      return result;
+      return completed;
     } catch (err) {
       console.error('Failed to toggle task completion:', err);
       throw err;

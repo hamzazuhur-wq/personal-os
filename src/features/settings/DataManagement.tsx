@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { ExportService, POSBackupData } from '../../services/backup/exportService';
+import { ExportService, AuraBackupData } from '../../services/backup/exportService';
 import { Button } from '../../components/ui/Button';
 import { ConfirmDialog } from '../../components/ui/ConfirmDialog';
 import { Download, Upload, Trash2, CheckCircle2, AlertCircle } from 'lucide-react';
@@ -20,7 +20,7 @@ export const DataManagement: React.FC = () => {
       const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(backup, null, 2))}`;
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute('href', jsonString);
-      downloadAnchor.setAttribute('download', `POS-Backup-${new Date().toISOString().slice(0, 10)}.json`);
+      downloadAnchor.setAttribute('download', `Aura-Leveling-Backup-${new Date().toISOString().slice(0, 10)}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -42,7 +42,7 @@ export const DataManagement: React.FC = () => {
       setIsImporting(true);
       setStatusMessage(null);
       const fileContent = await file.text();
-      const parsedData: POSBackupData = JSON.parse(fileContent);
+      const parsedData: AuraBackupData = JSON.parse(fileContent);
 
       await ExportService.importData(parsedData);
       setStatusMessage({ type: 'success', text: 'Backup restored successfully. Reloading...' });

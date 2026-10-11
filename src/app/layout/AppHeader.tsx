@@ -15,7 +15,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ currentSection }) => {
       {/* Contextual Breadcrumb */}
       <div className="flex items-center gap-2.5">
         <div className="flex items-center gap-2 font-mono text-xs text-text-muted">
-          <span className="text-[#ff8a4a] font-bold tracking-widest">POS</span>
+          <span className="text-[#ff8a4a] font-bold tracking-widest">AURA</span>
           <span className="text-white/20 font-light">/</span>
           <span className="text-text-primary uppercase tracking-wider font-semibold text-xs sm:text-sm">
             {currentSection}

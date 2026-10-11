@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   theme: 'cyber-dark',
   accent_color: 'cyan',
   sound_effects_enabled: false,
+  voice_language: 'ar-SA',
   updated_at: new Date().toISOString(),
 };
 

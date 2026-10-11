@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { useActivities } from '../../hooks/useActivities';
+import { useGoals } from '../../hooks/useGoals';
+import { useProjects } from '../../hooks/useProjects';
+import { usePractices } from '../../hooks/usePractices';
+import { useTasks } from '../../hooks/useTasks';
+import { useVision } from '../../hooks/useVision';
 import { DatePickerBar } from '../../components/shared/DatePickerBar';
 import { DailyMetrics } from './DailyMetrics';
 import { ActivityTimeline } from './ActivityTimeline';
@@ -22,6 +27,11 @@ export const DailyLogPage: React.FC = () => {
     archiveActivity,
     deleteActivity,
   } = useActivities();
+  const { rawGoals: goals } = useGoals();
+  const { projects } = useProjects();
+  const { practices } = usePractices();
+  const { tasks } = useTasks();
+  const { lifeAreas } = useVision();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
@@ -40,7 +50,7 @@ export const DailyLogPage: React.FC = () => {
     if (editingActivity) {
       await updateActivity(editingActivity.id, dto as UpdateActivityDTO);
     } else {
-      await createActivity(dto as CreateActivityDTO);
+      return await createActivity(dto as CreateActivityDTO);
     }
   };
 
@@ -92,6 +102,11 @@ export const DailyLogPage: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         date={selectedDate}
         activityToEdit={editingActivity}
+        goals={goals}
+        projects={projects}
+        practices={practices}
+        lifeAreas={lifeAreas}
+        tasks={tasks}
         onSave={handleSave}
       />
     </div>

@@ -2,9 +2,20 @@ import React from 'react';
 import { SectionHeader } from '../../components/shared/SectionHeader';
 import { Badge } from '../../components/ui/Badge';
 import { DataManagement } from './DataManagement';
-import { Shield, Database, Info } from 'lucide-react';
+import { IdeaCategoriesSettings } from './IdeaCategoriesSettings';
+import { Shield, Database, Info, Mic } from 'lucide-react';
+import { useSettings } from '../../app/providers/SettingsProvider';
+import { VoiceLanguage } from '../../types/settings.types';
+import { cn } from '../../utils/cn';
 
 export const SettingsPage: React.FC = () => {
+  const { settings, updateSettings, loading: settingsLoading } = useSettings();
+
+  const voiceLanguage = settings?.voice_language ?? 'ar-SA';
+
+  const handleVoiceLanguageChange = async (value: VoiceLanguage) => {
+    await updateSettings({ voice_language: value });
+  };
   return (
     <div className="space-y-6">
       <SectionHeader
@@ -52,6 +63,54 @@ export const SettingsPage: React.FC = () => {
         <p className="text-xs text-text-secondary leading-relaxed max-w-2xl">
           All data is stored exclusively in your browser's IndexedDB on this device. No data leaves your machine. No account, no cloud sync, no telemetry. The storage layer is abstracted behind a repository interface — when you choose to migrate to a self-hosted Hostinger backend in the future, no UI or business logic will require modification.
         </p>
+      </div>
+
+      {/* Voice & Input Panel */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-white/[0.06] via-white/[0.025] to-white/[0.01] backdrop-blur-3xl border border-white/[0.09] shadow-[0_16px_48px_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="p-2 rounded-xl bg-sky-500/15 text-sky-400 border border-sky-500/30 shadow-[0_0_12px_rgba(56,189,248,0.15)]">
+            <Mic className="w-4 h-4 stroke-[2]" />
+          </div>
+          <h3 className="text-sm font-mono font-bold uppercase tracking-[0.18em] text-[#fff4ec]">
+            Voice & Input
+          </h3>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="text-[11px] font-mono font-semibold uppercase tracking-[0.15em] text-text-muted block mb-2">
+              Voice Language
+            </label>
+            <p className="text-xs text-text-secondary mb-3">
+              Choose the speech-recognition locale for Voice and AI Voice capture. Arabic is the default; switch to English if you primarily dictate in English.
+            </p>
+            <div className="flex items-center gap-2">
+              {(['ar-SA', 'en-US'] as VoiceLanguage[]).map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => handleVoiceLanguageChange(lang)}
+                  disabled={settingsLoading}
+                  className={cn(
+                    'flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer border',
+                    voiceLanguage === lang
+                      ? 'bg-[#ff6a2a]/15 border-[#ff8a4a]/40 text-[#ffb27a]'
+                      : 'bg-black/30 border-white/[0.08] text-text-muted hover:text-text-secondary'
+                  )}
+                  data-testid={`voice-lang-${lang}`}
+                >
+                  <span className="font-mono uppercase tracking-wider">{lang}</span>
+                  <span className="text-[10px] opacity-70">{lang === 'ar-SA' ? 'العربية' : 'English'}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Idea Categories Management (the ONLY place categories are managed) */}
+      <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-b from-white/[0.06] via-white/[0.025] to-white/[0.01] backdrop-blur-3xl border border-white/[0.09] shadow-[0_16px_48px_rgba(0,0,0,0.4),inset_0_1px_0_0_rgba(255,255,255,0.08)]">
+        <IdeaCategoriesSettings />
       </div>
 
       {/* Data Management Panel */}

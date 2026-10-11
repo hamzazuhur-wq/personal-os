@@ -1,9 +1,9 @@
 export const APP_CONFIG = {
-  name: 'PERSONAL OPERATING SYSTEM',
-  shortName: 'POS',
+  name: 'AURA LEVELING',
+  shortName: 'AURA',
   version: '0.1.0',
   moduleName: 'MODULE 01 — FOUNDATION & DAILY COMMAND CENTER',
-  author: 'Private System',
+  author: 'Aura Leveling',
   maxContentWidth: 'max-w-7xl',
   defaultUserId: 'user-primary',
 } as const;
